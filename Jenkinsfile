@@ -1,34 +1,26 @@
 pipeline {
-
-	agent any
-
-	
-	tools {
-  maven 'm360'
+    agent any
+    stages {
+    stage('clean'){
+        steps {
+            sh 'mvn clean'
+        }
+    }
+    stage ('compile'){
+        steps {
+            sh 'mvn compile'
+        }
+    }
+    stage ('Test'){
+        steps{
+            sh 'mvn test'
+        }
+    }
+    stage ('build'){
+        steps{
+            sh 'mvn install'
+        }
+    }
+    
 }
-	
-	parameters {
-  string defaultValue: 'adi', name: 'name', trim: true
-}
-	stages {
-	  stage('build') {
-		steps {
-		  sh 'mvn install -DskipTests'
-		}
-	  }
-
-	  stage('test') {
-		  steps {
-				sh 'echo new'
-			}
-		 post {
-			 always{
-				archiveArtifacts artifacts: 'target/**.jar', followSymlinks: false
-			
-			 }
-			}
-	  }
-		
-}
-
 }
